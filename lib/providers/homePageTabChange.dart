@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:new_test/models/category.dart';
 
 class HomePageTabChange with ChangeNotifier {
-  var _currentTab = 0;
+  var _currentTabId = "";
+  Category _currentTab;
 
-  void changeTab(int index) {
-    print("imin");
-    _currentTab = index;
-    notifyListeners();
+  String get whichTab {
+    print(_currentTabId);
+    return _currentTabId;
   }
 
-  int get whichTab {
-    print(_currentTab);
+  Category get whichCategory {
     return _currentTab;
+  }
+
+  void updateTabBox(Category category, bool notify) {
+    _currentTabId = category.categoryId;
+    _currentTab = category;
+    if (notify) notifyListeners();
   }
 }

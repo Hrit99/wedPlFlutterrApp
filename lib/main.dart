@@ -3,6 +3,7 @@ import 'package:new_test/pages/entryPage.dart';
 import 'package:new_test/pages/homePage.dart';
 import 'package:new_test/pages/loginPage.dart';
 import 'package:new_test/pages/splashPage.dart';
+import 'package:new_test/providers/homePageSubTabChange.dart';
 import 'package:new_test/providers/homePageTabChange.dart';
 import 'package:new_test/utils/assets/styles.dart';
 import 'package:provider/provider.dart';
@@ -16,19 +17,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => HomePageTabChange(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: new AppColors().backgroundColor,
-          accentColor: new AppColors().borderColor,
-          fontFamily: 'Kalam',
+      child: ChangeNotifierProvider(
+        create: (_) => HomePageSubTabChange(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primaryColor: new AppColors().backgroundColor,
+            accentColor: new AppColors().borderColor,
+            fontFamily: 'Kalam',
+          ),
+          routes: {
+            '/': (context) => SplashScreen(),
+            '/homePage': (context) => HomePage(),
+            '/entryPage': (context) => EntryPage(),
+            '/loginPage': (context) => LoginPage(),
+          },
         ),
-        routes: {
-          '/': (context) => SplashScreen(),
-          '/homePage': (context) => HomePage(),
-          '/entryPage': (context) => EntryPage(),
-          '/loginPage': (context) => LoginPage(),
-        },
       ),
     );
   }

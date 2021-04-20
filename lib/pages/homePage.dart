@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:new_test/apis/reloadCheckApi.dart';
+import 'package:new_test/models/category.dart';
 import 'package:new_test/utils/flutter_ui_utils.dart';
 import 'package:new_test/widgets/borderSplash.dart';
 import 'package:new_test/widgets/homePageContainer.dart';
 import 'package:new_test/widgets/rangoliImg.dart';
+import 'package:new_test/apis/categoryApi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,12 +14,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double _getPercent(double p, double quan) {
+    return ((p / 100) * quan);
+  }
+
   @override
   Widget build(BuildContext context) {
-    double _getPercent(double p, double quan) {
-      return ((p / 100) * quan);
-    }
-
+    Future allCategories = getAllCategories();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).primaryColor,
@@ -40,14 +45,27 @@ class _HomePageState extends State<HomePage> {
               ),
               Positioned(
                 top: smImgHeight + (2 * smTopGap),
-                left: _getPercent(5, constraints.maxWidth),
                 child: Container(
-                  width: constraints.maxWidth -
-                      _getPercent(10, constraints.maxWidth),
-                  height: constraints.maxHeight -
-                      (smImgHeight + (2 * smTopGap)) -
-                      _getPercent(5, constraints.maxWidth),
-                  child: HomePageContainer(),
+                  width: constraints.maxWidth,
+                  height:
+                      constraints.maxHeight - (smImgHeight + (2 * smTopGap)),
+                  child: FutureBuilder(
+                    future: allCategories,
+                    builder: (context, snapshot) {
+                      print(snapshot.data.toString());
+                      if (snapshot.data != null) {
+                        print("yes");
+                        return HomePageContainer(snapshot.data);
+                      } else {
+                        print("nooo");
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ]);
@@ -70,3 +88,4 @@ class _HomePageState extends State<HomePage> {
 //     child: HomePageContainer(),
 //   ),
 // ),
+// HomePageContainer()

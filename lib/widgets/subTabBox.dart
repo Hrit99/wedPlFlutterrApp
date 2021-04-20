@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:new_test/models/category.dart';
+import 'package:new_test/models/subcategory.dart';
+import 'package:new_test/providers/homePageSubTabChange.dart';
 import 'package:new_test/providers/homePageTabChange.dart';
 import 'package:new_test/utils/flutter_ui_utils.dart';
 import 'package:provider/provider.dart';
 
-class TabBox extends StatelessWidget {
-  final Category category;
-  TabBox({@required this.category});
+class SubTabBox extends StatelessWidget {
+  final Subcategory subcategory;
+  SubTabBox({@required this.subcategory});
   @override
   Widget build(BuildContext context) {
-    var tabProvider = Provider.of<HomePageTabChange>(context, listen: false);
+    var subtabProvider =
+        Provider.of<HomePageSubTabChange>(context, listen: false);
 
     return Card(
       shadowColor: Colors.black,
@@ -24,12 +27,12 @@ class TabBox extends StatelessWidget {
         // hoverColor: Theme.of(context).accentColor,
         selectedTileColor: Theme.of(context).accentColor,
         enabled: true,
-        selected: category.categoryId == tabProvider.whichTab,
+        selected: subcategory.subcategoryId == subtabProvider.whichSubTab,
         leading: Icon(Icons.access_alarm),
-        title: Text(category.category),
+        title: Text(subcategory.subcategory),
         onTap: () {
           print("d");
-          tabProvider.updateTabBox(category, true);
+          subtabProvider.updateSubTabBox(subcategory, true);
         },
       ),
     );

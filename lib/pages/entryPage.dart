@@ -8,6 +8,7 @@ import 'package:new_test/widgets/loginForm.dart';
 import 'package:new_test/widgets/rangoliImg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EntryPage extends StatefulWidget {
   @override
@@ -38,6 +39,15 @@ class _EntryPageState extends State<EntryPage> {
     return ((p / 100) * quan);
   }
 
+  Future<bool> checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final counter = prefs.getString('username') ?? null;
+    if (counter != null)
+      return true;
+    else
+      return false;
+  }
+
   Future<bool> _signal2;
   var loggedin = false;
 
@@ -47,7 +57,6 @@ class _EntryPageState extends State<EntryPage> {
     print(FlutterUiDart(context: context).getPercentHeight(100));
     var imgWidth = FlutterUiDart(context: context).getPercentWidth(30);
     var imgHeight = FlutterUiDart(context: context).getPercentWidth(30);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).primaryColor,
@@ -73,7 +82,13 @@ class _EntryPageState extends State<EntryPage> {
                 duration: Duration(seconds: 3),
                 child: RangoliImg(rangoliBuilt: () {}, timeDuration: 0),
                 onEnd: () {
-                  Navigator.of(context).pushReplacementNamed('/loginPage');
+                  checkLogin().then((value) {
+                    print(value);
+                    if (value)
+                      Navigator.of(context).pushReplacementNamed('/homePage');
+                    else
+                      Navigator.of(context).pushReplacementNamed('/loginPage');
+                  });
                 },
               ),
             ]);

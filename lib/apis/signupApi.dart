@@ -8,6 +8,7 @@ Future<bool> store(
     @required String email,
     @required String phone}) async {
   var stored;
+
   await http
       .post(
     'https://safe-springs-56633.herokuapp.com/api/user/store',
